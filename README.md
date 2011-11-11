@@ -1,0 +1,1 @@
+This is an NativeExtension for java-signals which target android specifically.
