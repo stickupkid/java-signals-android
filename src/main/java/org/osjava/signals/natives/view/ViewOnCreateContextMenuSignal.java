@@ -9,17 +9,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
 
-public class NativeOnCreateContextMenuSignal extends
+public class ViewOnCreateContextMenuSignal extends
 		NativeSignalImpl3<View, ContextMenu, ContextMenuInfo> {
 
-	private final static String TAG_NAME = NativeOnCreateContextMenuSignal.class.getSimpleName();
+	private final static String TAG_NAME = ViewOnCreateContextMenuSignal.class.getSimpleName();
 
 	private final TargetListener _listener = new TargetListener();
 
 	/**
 	 * Private constructor
 	 */
-	private NativeOnCreateContextMenuSignal() {
+	private ViewOnCreateContextMenuSignal() {
 	}
 
 	/**
@@ -28,18 +28,18 @@ public class NativeOnCreateContextMenuSignal extends
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
-	private NativeOnCreateContextMenuSignal(View target) {
+	private ViewOnCreateContextMenuSignal(View target) {
 		setTarget(target);
 	}
 
 	/**
 	 * Create a newInstance of NativeOnCreateContextMenuSignal
 	 * 
-	 * @return {@link NativeOnCreateContextMenuSignal}
+	 * @return {@link ViewOnCreateContextMenuSignal}
 	 */
 	@SuppressWarnings("unchecked")
-	public static NativeOnCreateContextMenuSignal newInstance() {
-		return new NativeOnCreateContextMenuSignal();
+	public static ViewOnCreateContextMenuSignal newInstance() {
+		return new ViewOnCreateContextMenuSignal();
 	}
 
 	/**
@@ -47,10 +47,10 @@ public class NativeOnCreateContextMenuSignal extends
 	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
-	 * @return {@link NativeOnCreateContextMenuSignal}
+	 * @return {@link ViewOnCreateContextMenuSignal}
 	 */
-	public static NativeOnCreateContextMenuSignal newInstance(final View target) {
-		return new NativeOnCreateContextMenuSignal(target);
+	public static ViewOnCreateContextMenuSignal newInstance(final View target) {
+		return new ViewOnCreateContextMenuSignal(target);
 	}
 
 	/**

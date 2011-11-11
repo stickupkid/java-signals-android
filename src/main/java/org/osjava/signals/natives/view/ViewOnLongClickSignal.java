@@ -7,20 +7,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
-public class NativeOnLongClickSignal extends NativeSignalImpl1<View> {
+public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 
-	private final static String TAG_NAME = NativeOnLongClickSignal.class.getSimpleName();
+	private final static String TAG_NAME = ViewOnLongClickSignal.class.getSimpleName();
 
-	private final static boolean INIT_CONSUMED_VALUE = true;
+	private final static boolean DEFAULT_CONSUMED_VALUE = true;
 
 	private final TargetListener _listener = new TargetListener();
 
-	private boolean _consumed = INIT_CONSUMED_VALUE;
+	private boolean _consumed = DEFAULT_CONSUMED_VALUE;
 
 	/**
 	 * Private constructor
 	 */
-	private NativeOnLongClickSignal() {
+	private ViewOnLongClickSignal() {
 	}
 
 	/**
@@ -29,18 +29,18 @@ public class NativeOnLongClickSignal extends NativeSignalImpl1<View> {
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
-	private NativeOnLongClickSignal(View target) {
+	private ViewOnLongClickSignal(View target) {
 		setTarget(target);
 	}
 
 	/**
 	 * Create a newInstance of NativeOnLongClickSignal
 	 * 
-	 * @return {@link NativeOnLongClickSignal}
+	 * @return {@link ViewOnLongClickSignal}
 	 */
 	@SuppressWarnings("unchecked")
-	public static NativeOnLongClickSignal newInstance() {
-		return new NativeOnLongClickSignal();
+	public static ViewOnLongClickSignal newInstance() {
+		return new ViewOnLongClickSignal();
 	}
 
 	/**
@@ -48,10 +48,10 @@ public class NativeOnLongClickSignal extends NativeSignalImpl1<View> {
 	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
-	 * @return {@link NativeOnLongClickSignal}
+	 * @return {@link ViewOnLongClickSignal}
 	 */
-	public static NativeOnLongClickSignal newInstance(final View target) {
-		return new NativeOnLongClickSignal(target);
+	public static ViewOnLongClickSignal newInstance(final View target) {
+		return new ViewOnLongClickSignal(target);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class NativeOnLongClickSignal extends NativeSignalImpl1<View> {
 
 		@Override
 		public boolean onLongClick(final View v) {
-			setConsumed(INIT_CONSUMED_VALUE);
+			setConsumed(DEFAULT_CONSUMED_VALUE);
 
 			try {
 				dispatch(v);

@@ -1,27 +1,27 @@
 package org.osjava.signals.natives.view;
 
-import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl2;
+import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl3;
 
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
+import android.view.View.OnKeyListener;
 
-public class NativeOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
+public class ViewOnKeySignal extends NativeSignalImpl3<View, Integer, KeyEvent> {
 
-	private final static String TAG_NAME = NativeOnTouchSignal.class.getSimpleName();
+	private final static String TAG_NAME = ViewOnKeySignal.class.getSimpleName();
 
-	private final static boolean INIT_CONSUMED_VALUE = true;
+	private final static boolean DEFAULT_CONSUMED_VALUE = true;
 
 	private final TargetListener _listener = new TargetListener();
 
-	private boolean _consumed = INIT_CONSUMED_VALUE;
+	private boolean _consumed = DEFAULT_CONSUMED_VALUE;
 
 	/**
 	 * Private constructor
 	 */
-	private NativeOnTouchSignal() {
+	private ViewOnKeySignal() {
 	}
 
 	/**
@@ -30,29 +30,29 @@ public class NativeOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
-	private NativeOnTouchSignal(View target) {
+	private ViewOnKeySignal(View target) {
 		setTarget(target);
 	}
 
 	/**
-	 * Create a newInstance of NativeOnTouchSignal
+	 * Create a newInstance of NativeOnKeySignal
 	 * 
-	 * @return {@link NativeOnTouchSignal}
+	 * @return {@link ViewOnKeySignal}
 	 */
 	@SuppressWarnings("unchecked")
-	public static NativeOnTouchSignal newInstance() {
-		return new NativeOnTouchSignal();
+	public static ViewOnKeySignal newInstance() {
+		return new ViewOnKeySignal();
 	}
 
 	/**
-	 * Create a newInstance of NativeOnLongClickSignalImpl
+	 * Create a newInstance of NativeOnKeySignal
 	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
-	 * @return {@link NativeOnLongClickSignal}
+	 * @return {@link ViewOnKeySignal}
 	 */
-	public static NativeOnTouchSignal newInstance(final View target) {
-		return new NativeOnTouchSignal(target);
+	public static ViewOnKeySignal newInstance(final View target) {
+		return new ViewOnKeySignal(target);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class NativeOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 	 */
 	@Override
 	protected void removeTargetListener() {
-		getTarget().setOnTouchListener(null);
+		getTarget().setOnLongClickListener(null);
 	}
 
 	/**
@@ -90,21 +90,21 @@ public class NativeOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 		// Target could be null when we register it.
 		View view = getTarget();
 		if (null != view)
-			view.setOnTouchListener(_listener);
+			view.setOnKeyListener(_listener);
 	}
 
 	/**
 	 * Private target listener class which implements the
 	 * {@link OnClickListener}
 	 */
-	private final class TargetListener implements OnTouchListener {
+	private final class TargetListener implements OnKeyListener {
 
 		@Override
-		public boolean onTouch(final View v, final MotionEvent event) {
-			setConsumed(INIT_CONSUMED_VALUE);
+		public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
+			setConsumed(DEFAULT_CONSUMED_VALUE);
 
 			try {
-				dispatch(v, event);
+				dispatch(v, keyCode, event);
 			} catch (Throwable t) {
 				Log.e(TAG_NAME, "Dispatch Error", t);
 			}

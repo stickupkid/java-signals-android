@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 
-public class NativeOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
+public class ViewOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
 
-	private final static String TAG_NAME = NativeOnFocusChangeSignal.class.getSimpleName();
+	private final static String TAG_NAME = ViewOnFocusChangeSignal.class.getSimpleName();
 
 	private final TargetListener _listener = new TargetListener();
 
 	/**
 	 * Private constructor
 	 */
-	private NativeOnFocusChangeSignal() {
+	private ViewOnFocusChangeSignal() {
 	}
 
 	/**
@@ -25,18 +25,18 @@ public class NativeOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
-	private NativeOnFocusChangeSignal(View target) {
+	private ViewOnFocusChangeSignal(View target) {
 		setTarget(target);
 	}
 
 	/**
 	 * Create a newInstance of NativeOnFocusChangeSignal
 	 * 
-	 * @return {@link NativeOnFocusChangeSignal}
+	 * @return {@link ViewOnFocusChangeSignal}
 	 */
 	@SuppressWarnings("unchecked")
-	public static NativeOnFocusChangeSignal newInstance() {
-		return new NativeOnFocusChangeSignal();
+	public static ViewOnFocusChangeSignal newInstance() {
+		return new ViewOnFocusChangeSignal();
 	}
 
 	/**
@@ -44,10 +44,10 @@ public class NativeOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> 
 	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
-	 * @return {@link NativeOnFocusChangeSignal}
+	 * @return {@link ViewOnFocusChangeSignal}
 	 */
-	public static NativeOnFocusChangeSignal newInstance(final View target) {
-		return new NativeOnFocusChangeSignal(target);
+	public static ViewOnFocusChangeSignal newInstance(final View target) {
+		return new ViewOnFocusChangeSignal(target);
 	}
 
 	/**

@@ -6,16 +6,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class NativeOnClickSignal extends NativeSignalImpl1<View> {
+public class ViewOnClickSignal extends NativeSignalImpl1<View> {
 
-	private final static String TAG_NAME = NativeOnClickSignal.class.getSimpleName();
+	private final static String TAG_NAME = ViewOnClickSignal.class.getSimpleName();
 
 	private final TargetListener _listener = new TargetListener();
 
 	/**
 	 * Private constructor
 	 */
-	private NativeOnClickSignal() {
+	private ViewOnClickSignal() {
 	}
 
 	/**
@@ -24,18 +24,18 @@ public class NativeOnClickSignal extends NativeSignalImpl1<View> {
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
-	private NativeOnClickSignal(View target) {
+	private ViewOnClickSignal(View target) {
 		setTarget(target);
 	}
 
 	/**
 	 * Create a newInstance of NativeOnClickSignalImpl
 	 * 
-	 * @return {@link NativeOnClickSignal}
+	 * @return {@link ViewOnClickSignal}
 	 */
 	@SuppressWarnings("unchecked")
-	public static NativeOnClickSignal newInstance() {
-		return new NativeOnClickSignal();
+	public static ViewOnClickSignal newInstance() {
+		return new ViewOnClickSignal();
 	}
 
 	/**
@@ -43,10 +43,10 @@ public class NativeOnClickSignal extends NativeSignalImpl1<View> {
 	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
-	 * @return {@link NativeOnClickSignal}
+	 * @return {@link ViewOnClickSignal}
 	 */
-	public static NativeOnClickSignal newInstance(final View target) {
-		return new NativeOnClickSignal(target);
+	public static ViewOnClickSignal newInstance(final View target) {
+		return new ViewOnClickSignal(target);
 	}
 
 	/**
