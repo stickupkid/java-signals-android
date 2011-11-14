@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class AdapterViewOnItemLongClickListener extends
+public class AdapterViewOnItemLongClickSignal extends
 		NativeSignalImpl4<AdapterView<?>, View, Integer, Long> {
 	
 	private final static boolean DEFAULT_CONSUMED_VALUE = true;
@@ -19,7 +19,7 @@ public class AdapterViewOnItemLongClickListener extends
 	/**
 	 * Private constructor
 	 */
-	private AdapterViewOnItemLongClickListener() {
+	private AdapterViewOnItemLongClickSignal() {
 	}
 
 	/**
@@ -28,29 +28,29 @@ public class AdapterViewOnItemLongClickListener extends
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
-	private AdapterViewOnItemLongClickListener(final AdapterView<?> target) {
+	private AdapterViewOnItemLongClickSignal(final AdapterView<?> target) {
 		setTarget(target);
 	}
 
 	/**
-	 * Create a newInstance of AdapterViewOnItemLongClickListener
+	 * Create a newInstance of AdapterViewOnItemLongClickSignal
 	 * 
-	 * @return {@link AdapterViewOnItemLongClickListener}
+	 * @return {@link AdapterViewOnItemLongClickSignal}
 	 */
 	@SuppressWarnings("unchecked")
-	public static AdapterViewOnItemLongClickListener newInstance() {
-		return new AdapterViewOnItemLongClickListener();
+	public static AdapterViewOnItemLongClickSignal newInstance() {
+		return new AdapterViewOnItemLongClickSignal();
 	}
 
 	/**
-	 * Create a newInstance of AdapterViewOnItemLongClickListener
+	 * Create a newInstance of AdapterViewOnItemLongClickSignal
 	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
-	 * @return {@link AdapterViewOnItemLongClickListener}
+	 * @return {@link AdapterViewOnItemLongClickSignal}
 	 */
-	public static AdapterViewOnItemLongClickListener newInstance(final AdapterView<?> target) {
-		return new AdapterViewOnItemLongClickListener(target);
+	public static AdapterViewOnItemLongClickSignal newInstance(final AdapterView<?> target) {
+		return new AdapterViewOnItemLongClickSignal(target);
 	}
 	
 	/**
