@@ -95,9 +95,10 @@ public class ViewOnLayoutChangeSignal extends
 	@Override
 	protected void removeTargetListener() {
 		View view = getTarget();
+
 		if (null != view && null != _method) {
 			try {
-				if (_method.isAccessible())
+				if (!_method.isAccessible())
 					_method.setAccessible(true);
 
 				Object[] arguments = { null };
@@ -110,6 +111,8 @@ public class ViewOnLayoutChangeSignal extends
 				throw new RuntimeException(e);
 			}
 		}
+
+		_method = null;
 	}
 
 	/**
@@ -120,33 +123,31 @@ public class ViewOnLayoutChangeSignal extends
 		if (null != _interface && null != _proxy) {
 			View view = getTarget();
 			if (null != view) {
-				if (null == _method) {
-					try {
-						final Method[] methods = view.getClass().getMethods();
-						for (final Method method : methods) {
-							if (method.getName().equals(CLASS_SUBSCRIBER_NAME)) {
-								// We know the contact so we can skip the method
-								// name
-								_method = method;
-								break;
-							}
-						}
-					} catch (SecurityException e) {
-						throw new RuntimeException(e);
-					}
-				}
 
-				if (null != _method) {
-					try {
-						Object[] arguments = { _proxy };
-						_method.invoke(view, arguments);
-					} catch (IllegalArgumentException e) {
-						throw new RuntimeException(e);
-					} catch (IllegalAccessException e) {
-						throw new RuntimeException(e);
-					} catch (InvocationTargetException e) {
-						throw new RuntimeException(e);
+				try {
+					final Method[] methods = view.getClass().getMethods();
+					for (final Method method : methods) {
+						if (method.getName().equals(CLASS_SUBSCRIBER_NAME)) {
+							// We know the contact so we can skip the method
+							// name
+							_method = method;
+							
+							if (!_method.isAccessible())
+								_method.setAccessible(true);
+
+							Object[] arguments = { _proxy };
+							_method.invoke(view, arguments);
+							break;
+						}
 					}
+				} catch (SecurityException e) {
+					throw new RuntimeException(e);
+				} catch (IllegalArgumentException e) {
+					throw new RuntimeException(e);
+				} catch (IllegalAccessException e) {
+					throw new RuntimeException(e);
+				} catch (InvocationTargetException e) {
+					throw new RuntimeException(e);
 				}
 			}
 		}
