@@ -49,9 +49,9 @@
 		<dependency>
 			<groupId>java-signals</groupId>
 			<artifactId>org.osjava.signals</artifactId>
-			<version>0.2</version>
+			<version>0.4</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/jsignals/jsignals-0.2-SNAPSHOT.jar</systemPath>
+			<systemPath>${basedir}/lib/jsignals/jsignals-0.4-SNAPSHOT.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>

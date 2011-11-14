@@ -9,6 +9,9 @@
 
 	<property name="junit.version" value="4.9" />
 	<property name="junit.dist" value="junit-${junit.version}" />
+	
+	<property name="android.version" value="7" />
+	<property name="android.dist" value="android-${android.version}" />
 
 	<property name="dir.target" location="target" />
 	<property name="dir.src" value="src/main/java" />
@@ -18,12 +21,17 @@
 	<property name="dir.dist" location="${dir.target}/bin" />
 	<property name="dir.build" location="${dir.target}/main" />
 	<property name="dir.javadoc" location="${dir.target}/javadoc" />
-
-	<path id="classpath.main" />
+	
+	<property environment="env"/>
+		
+	<path id="classpath.main">
+		<pathelement location="${env.ANDROID_HOME}/platforms/${android.dist}/android.jar" />
+	</path>
 	<path id="classpath.test">
+		<path refid="classpath.main" />
+		
 		<pathelement location="${dir.lib}/junit/${junit.dist}.jar" />
 		<pathelement location="${dir.dist}/${jsignals-android.jar.test}" />
-		<path refid="classpath.main" />
 	</path>
 
 	<target name="init">
@@ -40,7 +48,7 @@
 		<attribute name="classpath" />
 		<sequential>
 			<mkdir dir="@{dest}" />
-			<javac srcdir="@{src}" destdir="@{dest}" debug="on" includeantruntime="false" target="1.5">
+			<javac srcdir="@{src}" destdir="@{dest}" debug="on" includeantruntime="false" target="1.6">
 				<classpath refid="@{classpath}" />
 				<compilerarg value="-Xlint:unchecked" />
 			</javac>
