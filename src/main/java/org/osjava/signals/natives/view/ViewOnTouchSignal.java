@@ -104,8 +104,8 @@ public class ViewOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 			try {
 				dispatch(v, event);
 			} catch (Throwable t) {
-				t.printStackTrace();
 				setConsumed(false);
+				throw new RuntimeException(t);
 			}
 
 			return isConsumed();

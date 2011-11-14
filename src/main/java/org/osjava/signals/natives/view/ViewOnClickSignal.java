@@ -77,7 +77,7 @@ public class ViewOnClickSignal extends NativeSignalImpl1<View> {
 			try {
 				dispatch(v);
 			} catch (Throwable t) {
-				t.printStackTrace();
+				throw new RuntimeException(t);
 			}
 		}
 	}

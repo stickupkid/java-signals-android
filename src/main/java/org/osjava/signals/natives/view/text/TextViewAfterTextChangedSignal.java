@@ -79,7 +79,7 @@ public class TextViewAfterTextChangedSignal extends NativeSignalImpl2<TextView, 
 			try {
 				dispatch(getTarget(), s);
 			} catch (Throwable t) {
-				t.printStackTrace();
+				throw new RuntimeException(t);
 			}
 		}
 

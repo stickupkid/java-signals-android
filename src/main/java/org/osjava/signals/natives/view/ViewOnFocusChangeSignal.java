@@ -78,7 +78,7 @@ public class ViewOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
 			try {
 				dispatch(v, hasFocus);
 			} catch (Throwable t) {
-				t.printStackTrace();
+				throw new RuntimeException(t);
 			}
 		}
 	}

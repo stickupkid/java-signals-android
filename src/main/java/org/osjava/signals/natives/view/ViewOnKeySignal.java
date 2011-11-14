@@ -105,8 +105,8 @@ public class ViewOnKeySignal extends NativeSignalImpl3<View, Integer, KeyEvent> 
 			try {
 				dispatch(v, keyCode, event);
 			} catch (Throwable t) {
-				t.printStackTrace();
 				setConsumed(false);
+				throw new RuntimeException(t);
 			}
 
 			return isConsumed();

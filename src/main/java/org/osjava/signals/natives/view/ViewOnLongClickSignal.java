@@ -103,8 +103,8 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 			try {
 				dispatch(v);
 			} catch (Throwable t) {
-				t.printStackTrace();
 				setConsumed(false);
+				throw new RuntimeException(t);
 			}
 
 			return isConsumed();

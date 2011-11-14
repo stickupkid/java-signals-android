@@ -83,7 +83,7 @@ public class ViewOnCreateContextMenuSignal extends
 			try {
 				dispatch(v, menu, menuInfo);
 			} catch (Throwable t) {
-				t.printStackTrace();
+				throw new RuntimeException(t);
 			}
 		}
 	}

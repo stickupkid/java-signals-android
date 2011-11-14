@@ -88,7 +88,7 @@ public class TextViewOnTextChangedSignal extends
 			try {
 				dispatch(getTarget(), s, start, before, count);
 			} catch (Throwable t) {
-				t.printStackTrace();
+				throw new RuntimeException(t);
 			}
 		}
 	}

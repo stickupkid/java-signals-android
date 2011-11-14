@@ -104,8 +104,8 @@ public class TextViewOnEditorActionSignal extends NativeSignalImpl3<TextView, In
 			try {
 				dispatch(v, actionId, event);
 			} catch (Throwable t) {
-				t.printStackTrace();
 				setConsumed(false);
+				throw new RuntimeException(t);
 			}
 
 			return isConsumed();
