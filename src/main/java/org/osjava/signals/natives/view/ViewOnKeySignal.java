@@ -2,15 +2,12 @@ package org.osjava.signals.natives.view;
 
 import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl3;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 
 public class ViewOnKeySignal extends NativeSignalImpl3<View, Integer, KeyEvent> {
-
-	private final static String TAG_NAME = ViewOnKeySignal.class.getSimpleName();
 
 	private final static boolean DEFAULT_CONSUMED_VALUE = true;
 
@@ -106,9 +103,10 @@ public class ViewOnKeySignal extends NativeSignalImpl3<View, Integer, KeyEvent> 
 			try {
 				dispatch(v, keyCode, event);
 			} catch (Throwable t) {
-				Log.e(TAG_NAME, "Dispatch Error", t);
+				t.printStackTrace();
+				setConsumed(false);
 			}
-
+			
 			return isConsumed();
 		}
 	}

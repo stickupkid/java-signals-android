@@ -2,14 +2,11 @@ package org.osjava.signals.natives.view;
 
 import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl2;
 
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 
 public class ViewOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
-
-	private final static String TAG_NAME = ViewOnFocusChangeSignal.class.getSimpleName();
 
 	private final TargetListener _listener = new TargetListener();
 
@@ -80,7 +77,7 @@ public class ViewOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
 			try {
 				dispatch(v, hasFocus);
 			} catch (Throwable t) {
-				Log.e(TAG_NAME, "Dispatch Error", t);
+				t.printStackTrace();
 			}
 		}
 	}

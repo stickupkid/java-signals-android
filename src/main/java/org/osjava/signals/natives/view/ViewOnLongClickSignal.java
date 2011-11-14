@@ -2,14 +2,11 @@ package org.osjava.signals.natives.view;
 
 import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl1;
 
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
 public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
-
-	private final static String TAG_NAME = ViewOnLongClickSignal.class.getSimpleName();
 
 	private final static boolean DEFAULT_CONSUMED_VALUE = true;
 
@@ -105,7 +102,8 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 			try {
 				dispatch(v);
 			} catch (Throwable t) {
-				Log.e(TAG_NAME, "Dispatch Error", t);
+				t.printStackTrace();
+				setConsumed(false);
 			}
 
 			return isConsumed();

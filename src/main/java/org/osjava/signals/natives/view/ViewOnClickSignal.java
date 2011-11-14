@@ -2,13 +2,10 @@ package org.osjava.signals.natives.view;
 
 import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl1;
 
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 public class ViewOnClickSignal extends NativeSignalImpl1<View> {
-
-	private final static String TAG_NAME = ViewOnClickSignal.class.getSimpleName();
 
 	private final TargetListener _listener = new TargetListener();
 
@@ -79,7 +76,7 @@ public class ViewOnClickSignal extends NativeSignalImpl1<View> {
 			try {
 				dispatch(v);
 			} catch (Throwable t) {
-				Log.e(TAG_NAME, "Dispatch Error", t);
+				t.printStackTrace();
 			}
 		}
 	}

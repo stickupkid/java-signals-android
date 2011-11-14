@@ -2,15 +2,12 @@ package org.osjava.signals.natives.view;
 
 import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl2;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 
 public class ViewOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
-
-	private final static String TAG_NAME = ViewOnTouchSignal.class.getSimpleName();
 
 	private final static boolean DEFAULT_CONSUMED_VALUE = true;
 
@@ -106,7 +103,8 @@ public class ViewOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 			try {
 				dispatch(v, event);
 			} catch (Throwable t) {
-				Log.e(TAG_NAME, "Dispatch Error", t);
+				t.printStackTrace();
+				setConsumed(false);
 			}
 
 			return isConsumed();

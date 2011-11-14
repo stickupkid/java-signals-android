@@ -2,7 +2,6 @@ package org.osjava.signals.natives.view;
 
 import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl3;
 
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.view.View.OnCreateContextMenuListener;
 
 public class ViewOnCreateContextMenuSignal extends
 		NativeSignalImpl3<View, ContextMenu, ContextMenuInfo> {
-
-	private final static String TAG_NAME = ViewOnCreateContextMenuSignal.class.getSimpleName();
 
 	private final TargetListener _listener = new TargetListener();
 
@@ -81,10 +78,11 @@ public class ViewOnCreateContextMenuSignal extends
 		@Override
 		public void onCreateContextMenu(final ContextMenu menu, final View v,
 				final ContextMenuInfo menuInfo) {
+			
 			try {
 				dispatch(v, menu, menuInfo);
 			} catch (Throwable t) {
-				Log.e(TAG_NAME, "Dispatch Error", t);
+				t.printStackTrace();
 			}
 		}
 	}
