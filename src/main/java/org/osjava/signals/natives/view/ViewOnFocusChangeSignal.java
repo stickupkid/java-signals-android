@@ -52,7 +52,9 @@ public class ViewOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
 	 */
 	@Override
 	protected void removeTargetListener() {
-		getTarget().setOnClickListener(null);
+		View view = getTarget();
+		if (null != view)
+			view.setOnFocusChangeListener(null);
 	}
 
 	/**
@@ -60,7 +62,6 @@ public class ViewOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
 	 */
 	@Override
 	protected void registerTargetListener() {
-		// Target could be null when we register it.
 		View view = getTarget();
 		if (null != view)
 			view.setOnFocusChangeListener(_listener);

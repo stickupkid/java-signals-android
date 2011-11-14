@@ -1,12 +1,13 @@
-package org.osjava.signals.natives.view;
+package org.osjava.signals.natives.view.text;
 
-import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl1;
+import org.osjava.signals.impl.NativeSignalImpl.NativeSignalImpl3;
 
-import android.view.View;
+import android.view.KeyEvent;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
-public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
+public class TextViewOnEditorActionSignal extends NativeSignalImpl3<TextView, Integer, KeyEvent> {
 
 	private final static boolean DEFAULT_CONSUMED_VALUE = true;
 
@@ -17,7 +18,7 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 	/**
 	 * Private constructor
 	 */
-	private ViewOnLongClickSignal() {
+	private TextViewOnEditorActionSignal() {
 	}
 
 	/**
@@ -26,29 +27,29 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
-	private ViewOnLongClickSignal(View target) {
+	private TextViewOnEditorActionSignal(final TextView target) {
 		setTarget(target);
 	}
 
 	/**
-	 * Create a newInstance of NativeOnLongClickSignal
+	 * Create a newInstance of TextViewOnEditorActionListener
 	 * 
-	 * @return {@link ViewOnLongClickSignal}
+	 * @return {@link TextViewOnEditorActionSignal}
 	 */
 	@SuppressWarnings("unchecked")
-	public static ViewOnLongClickSignal newInstance() {
-		return new ViewOnLongClickSignal();
+	public static TextViewOnEditorActionSignal newInstance() {
+		return new TextViewOnEditorActionSignal();
 	}
 
 	/**
-	 * Create a newInstance of NativeOnLongClickSignal
+	 * Create a newInstance of TextViewOnEditorActionListener
 	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
-	 * @return {@link ViewOnLongClickSignal}
+	 * @return {@link TextViewOnEditorActionSignal}
 	 */
-	public static ViewOnLongClickSignal newInstance(final View target) {
-		return new ViewOnLongClickSignal(target);
+	public static TextViewOnEditorActionSignal newInstance(final TextView target) {
+		return new TextViewOnEditorActionSignal(target);
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 	 * @param value
 	 *            True if the long click is consumed.
 	 */
-	public void setConsumed(boolean value) {
+	public void setConsumed(final boolean value) {
 		_consumed = value;
 	}
 
@@ -75,9 +76,9 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 	 */
 	@Override
 	protected void removeTargetListener() {
-		View view = getTarget();
+		TextView view = getTarget();
 		if (null != view)
-			view.setOnLongClickListener(null);
+			view.setOnEditorActionListener(null);
 	}
 
 	/**
@@ -85,23 +86,23 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 	 */
 	@Override
 	protected void registerTargetListener() {
-		View view = getTarget();
+		TextView view = getTarget();
 		if (null != view)
-			view.setOnLongClickListener(_listener);
+			view.setOnEditorActionListener(_listener);
 	}
 
 	/**
 	 * Private target listener class which implements the
 	 * {@link OnClickListener}
 	 */
-	private final class TargetListener implements OnLongClickListener {
+	private final class TargetListener implements OnEditorActionListener {
 
 		@Override
-		public boolean onLongClick(final View v) {
+		public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
 			setConsumed(DEFAULT_CONSUMED_VALUE);
 
 			try {
-				dispatch(v);
+				dispatch(v, actionId, event);
 			} catch (Throwable t) {
 				t.printStackTrace();
 				setConsumed(false);

@@ -51,7 +51,9 @@ public class ViewOnClickSignal extends NativeSignalImpl1<View> {
 	 */
 	@Override
 	protected void removeTargetListener() {
-		getTarget().setOnClickListener(null);
+		View view = getTarget();
+		if (null != view)
+			view.setOnClickListener(null);
 	}
 
 	/**
@@ -59,7 +61,6 @@ public class ViewOnClickSignal extends NativeSignalImpl1<View> {
 	 */
 	@Override
 	protected void registerTargetListener() {
-		// Target could be null when we register it.
 		View view = getTarget();
 		if (null != view)
 			view.setOnClickListener(_listener);

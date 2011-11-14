@@ -55,7 +55,9 @@ public class ViewOnCreateContextMenuSignal extends
 	 */
 	@Override
 	protected void removeTargetListener() {
-		getTarget().setOnLongClickListener(null);
+		View view = getTarget();
+		if (null != view)
+			view.setOnCreateContextMenuListener(null);
 	}
 
 	/**
@@ -63,7 +65,6 @@ public class ViewOnCreateContextMenuSignal extends
 	 */
 	@Override
 	protected void registerTargetListener() {
-		// Target could be null when we register it.
 		View view = getTarget();
 		if (null != view)
 			view.setOnCreateContextMenuListener(_listener);
@@ -78,7 +79,7 @@ public class ViewOnCreateContextMenuSignal extends
 		@Override
 		public void onCreateContextMenu(final ContextMenu menu, final View v,
 				final ContextMenuInfo menuInfo) {
-			
+
 			try {
 				dispatch(v, menu, menuInfo);
 			} catch (Throwable t) {

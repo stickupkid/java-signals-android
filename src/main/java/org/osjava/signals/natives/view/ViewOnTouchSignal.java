@@ -76,7 +76,9 @@ public class ViewOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 	 */
 	@Override
 	protected void removeTargetListener() {
-		getTarget().setOnTouchListener(null);
+		View view = getTarget();
+		if (null != view)
+			view.setOnTouchListener(null);
 	}
 
 	/**
@@ -84,7 +86,6 @@ public class ViewOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 	 */
 	@Override
 	protected void registerTargetListener() {
-		// Target could be null when we register it.
 		View view = getTarget();
 		if (null != view)
 			view.setOnTouchListener(_listener);

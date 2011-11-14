@@ -76,7 +76,9 @@ public class ViewOnKeySignal extends NativeSignalImpl3<View, Integer, KeyEvent> 
 	 */
 	@Override
 	protected void removeTargetListener() {
-		getTarget().setOnLongClickListener(null);
+		View view = getTarget();
+		if (null != view)
+			view.setOnKeyListener(null);
 	}
 
 	/**
@@ -106,7 +108,7 @@ public class ViewOnKeySignal extends NativeSignalImpl3<View, Integer, KeyEvent> 
 				t.printStackTrace();
 				setConsumed(false);
 			}
-			
+
 			return isConsumed();
 		}
 	}
