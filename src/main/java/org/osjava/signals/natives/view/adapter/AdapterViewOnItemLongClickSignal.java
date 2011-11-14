@@ -9,18 +9,12 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class AdapterViewOnItemLongClickSignal extends
 		NativeSignalImpl4<AdapterView<?>, View, Integer, Long> {
-	
-	private final static boolean DEFAULT_CONSUMED_VALUE = true;
-	
-	private final TargetListener _listener = new TargetListener();
-	
-	private boolean _consumed = DEFAULT_CONSUMED_VALUE;
 
-	/**
-	 * Private constructor
-	 */
-	private AdapterViewOnItemLongClickSignal() {
-	}
+	private final static boolean DEFAULT_CONSUMED_VALUE = true;
+
+	private final TargetListener _listener = new TargetListener();
+
+	private boolean _consumed = DEFAULT_CONSUMED_VALUE;
 
 	/**
 	 * Private constructor
@@ -35,16 +29,6 @@ public class AdapterViewOnItemLongClickSignal extends
 	/**
 	 * Create a newInstance of AdapterViewOnItemLongClickSignal
 	 * 
-	 * @return {@link AdapterViewOnItemLongClickSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static AdapterViewOnItemLongClickSignal newInstance() {
-		return new AdapterViewOnItemLongClickSignal();
-	}
-
-	/**
-	 * Create a newInstance of AdapterViewOnItemLongClickSignal
-	 * 
 	 * @param View
 	 *            target to apply the listener when executing a dispatch
 	 * @return {@link AdapterViewOnItemLongClickSignal}
@@ -52,7 +36,7 @@ public class AdapterViewOnItemLongClickSignal extends
 	public static AdapterViewOnItemLongClickSignal newInstance(final AdapterView<?> target) {
 		return new AdapterViewOnItemLongClickSignal(target);
 	}
-	
+
 	/**
 	 * Is the long click consumed or not
 	 * 
@@ -101,14 +85,14 @@ public class AdapterViewOnItemLongClickSignal extends
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 			setConsumed(DEFAULT_CONSUMED_VALUE);
-			
+
 			try {
 				dispatch(parent, view, position, id);
 			} catch (Throwable t) {
 				setConsumed(false);
 				throw new RuntimeException(t);
 			}
-			
+
 			return isConsumed();
 		}
 	}

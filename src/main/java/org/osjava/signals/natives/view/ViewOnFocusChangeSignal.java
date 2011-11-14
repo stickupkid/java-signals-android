@@ -12,28 +12,12 @@ public class ViewOnFocusChangeSignal extends NativeSignalImpl2<View, Boolean> {
 
 	/**
 	 * Private constructor
-	 */
-	private ViewOnFocusChangeSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private ViewOnFocusChangeSignal(View target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of NativeOnFocusChangeSignal
-	 * 
-	 * @return {@link ViewOnFocusChangeSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static ViewOnFocusChangeSignal newInstance() {
-		return new ViewOnFocusChangeSignal();
 	}
 
 	/**

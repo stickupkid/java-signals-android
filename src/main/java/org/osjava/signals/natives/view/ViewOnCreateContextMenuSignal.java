@@ -15,28 +15,12 @@ public class ViewOnCreateContextMenuSignal extends
 
 	/**
 	 * Private constructor
-	 */
-	private ViewOnCreateContextMenuSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private ViewOnCreateContextMenuSignal(View target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of NativeOnCreateContextMenuSignal
-	 * 
-	 * @return {@link ViewOnCreateContextMenuSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static ViewOnCreateContextMenuSignal newInstance() {
-		return new ViewOnCreateContextMenuSignal();
 	}
 
 	/**

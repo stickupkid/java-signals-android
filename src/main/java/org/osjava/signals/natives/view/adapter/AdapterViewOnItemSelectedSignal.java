@@ -14,28 +14,12 @@ public class AdapterViewOnItemSelectedSignal extends
 
 	/**
 	 * Private constructor
-	 */
-	private AdapterViewOnItemSelectedSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private AdapterViewOnItemSelectedSignal(final AdapterView<?> target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of AdapterViewOnItemSelectedSignal
-	 * 
-	 * @return {@link AdapterViewOnItemSelectedSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static AdapterViewOnItemSelectedSignal newInstance() {
-		return new AdapterViewOnItemSelectedSignal();
 	}
 
 	/**

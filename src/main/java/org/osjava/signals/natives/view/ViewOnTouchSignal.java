@@ -17,28 +17,12 @@ public class ViewOnTouchSignal extends NativeSignalImpl2<View, MotionEvent> {
 
 	/**
 	 * Private constructor
-	 */
-	private ViewOnTouchSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private ViewOnTouchSignal(View target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of NativeOnTouchSignal
-	 * 
-	 * @return {@link ViewOnTouchSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static ViewOnTouchSignal newInstance() {
-		return new ViewOnTouchSignal();
 	}
 
 	/**

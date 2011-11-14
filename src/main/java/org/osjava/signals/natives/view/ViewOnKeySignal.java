@@ -17,28 +17,12 @@ public class ViewOnKeySignal extends NativeSignalImpl3<View, Integer, KeyEvent> 
 
 	/**
 	 * Private constructor
-	 */
-	private ViewOnKeySignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private ViewOnKeySignal(View target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of NativeOnKeySignal
-	 * 
-	 * @return {@link ViewOnKeySignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static ViewOnKeySignal newInstance() {
-		return new ViewOnKeySignal();
 	}
 
 	/**

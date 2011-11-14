@@ -13,28 +13,12 @@ public class TextViewAfterTextChangedSignal extends NativeSignalImpl2<TextView, 
 
 	/**
 	 * Private constructor
-	 */
-	private TextViewAfterTextChangedSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private TextViewAfterTextChangedSignal(final TextView target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of TextViewAfterTextChangedSignal
-	 * 
-	 * @return {@link TextViewAfterTextChangedSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static TextViewAfterTextChangedSignal newInstance() {
-		return new TextViewAfterTextChangedSignal();
 	}
 
 	/**

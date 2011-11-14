@@ -14,28 +14,12 @@ public class TextViewBeforeTextChangedSignal extends
 
 	/**
 	 * Private constructor
-	 */
-	private TextViewBeforeTextChangedSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private TextViewBeforeTextChangedSignal(final TextView target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of TextViewBeforeTextChangedSignal
-	 * 
-	 * @return {@link TextViewBeforeTextChangedSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static TextViewBeforeTextChangedSignal newInstance() {
-		return new TextViewBeforeTextChangedSignal();
 	}
 
 	/**

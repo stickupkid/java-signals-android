@@ -7,15 +7,10 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class AdapterViewOnItemClickSignal extends NativeSignalImpl4<AdapterView<?>, View, Integer, Long> {
+public class AdapterViewOnItemClickSignal extends
+		NativeSignalImpl4<AdapterView<?>, View, Integer, Long> {
 
 	private final TargetListener _listener = new TargetListener();
-
-	/**
-	 * Private constructor
-	 */
-	private AdapterViewOnItemClickSignal() {
-	}
 
 	/**
 	 * Private constructor
@@ -25,16 +20,6 @@ public class AdapterViewOnItemClickSignal extends NativeSignalImpl4<AdapterView<
 	 */
 	private AdapterViewOnItemClickSignal(final AdapterView<?> target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of AdapterViewOnItemClickSignal
-	 * 
-	 * @return {@link AdapterViewOnItemClickSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static AdapterViewOnItemClickSignal newInstance() {
-		return new AdapterViewOnItemClickSignal();
 	}
 
 	/**

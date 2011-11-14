@@ -11,28 +11,12 @@ public class ViewOnClickSignal extends NativeSignalImpl1<View> {
 
 	/**
 	 * Private constructor
-	 */
-	private ViewOnClickSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private ViewOnClickSignal(View target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of NativeOnClickSignalImpl
-	 * 
-	 * @return {@link ViewOnClickSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static ViewOnClickSignal newInstance() {
-		return new ViewOnClickSignal();
 	}
 
 	/**

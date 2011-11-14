@@ -16,28 +16,12 @@ public class ViewOnLongClickSignal extends NativeSignalImpl1<View> {
 
 	/**
 	 * Private constructor
-	 */
-	private ViewOnLongClickSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private ViewOnLongClickSignal(View target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of NativeOnLongClickSignal
-	 * 
-	 * @return {@link ViewOnLongClickSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static ViewOnLongClickSignal newInstance() {
-		return new ViewOnLongClickSignal();
 	}
 
 	/**

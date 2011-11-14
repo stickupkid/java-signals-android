@@ -17,28 +17,12 @@ public class TextViewOnEditorActionSignal extends NativeSignalImpl3<TextView, In
 
 	/**
 	 * Private constructor
-	 */
-	private TextViewOnEditorActionSignal() {
-	}
-
-	/**
-	 * Private constructor
 	 * 
 	 * @param target
 	 *            to be used when applying the listeners
 	 */
 	private TextViewOnEditorActionSignal(final TextView target) {
 		setTarget(target);
-	}
-
-	/**
-	 * Create a newInstance of TextViewOnEditorActionListener
-	 * 
-	 * @return {@link TextViewOnEditorActionSignal}
-	 */
-	@SuppressWarnings("unchecked")
-	public static TextViewOnEditorActionSignal newInstance() {
-		return new TextViewOnEditorActionSignal();
 	}
 
 	/**
