@@ -36,11 +36,14 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		super(bindings);
 	}
 
-	protected void init(final String adapterName, final String listenerName,
+	protected void createProxy(final String adapterName, final String listenerName,
 			final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 			final String delegateMethodName) {
-
-		// TODO : add asserts!
+		assert adapterName == null : "Adapter name can not be null";
+		assert listenerName == null : "Listener name can not be null";
+		assert parameterTypes == null : "Parameter types can not be null";
+		assert delegate == null : "Delegate can not be null";
+		assert delegateMethodName == null : "Delegate method name can not be null";
 
 		_delegate = delegate;
 		_listenerName = listenerName;
@@ -67,7 +70,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		_proxy = Proxy.newProxyInstance(classLoader, proxyInterfaces, adapterProxy);
 	}
 
-	protected void removeProxy() {
+	protected void removeProxyMethod() {
 		T target = getTarget();
 		if (null != _invokeMethod) {
 			try {
@@ -88,7 +91,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		_invokeMethod = null;
 	}
 
-	protected void registerProxy() {
+	protected void registerProxyMethod() {
 		if (null != _adapterClass && null != _proxy) {
 			T target = getTarget();
 			if (null != target) {
@@ -243,7 +246,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		protected void init(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 				final String delegateMethodName) {
-			_signal.init(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
 		}
 
 		/**
@@ -306,9 +309,9 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 		@Override
 		public void setTarget(A target) {
-			_signal.removeProxy();
+			_signal.removeProxyMethod();
 			_signal.setTarget(target);
-			_signal.registerProxy();
+			_signal.registerProxyMethod();
 		}
 
 		/**
@@ -349,7 +352,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		protected void init(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 				final String delegateMethodName) {
-			_signal.init(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
 		}
 
 		/**
@@ -412,9 +415,9 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 		@Override
 		public void setTarget(A target) {
-			_signal.removeProxy();
+			_signal.removeProxyMethod();
 			_signal.setTarget(target);
-			_signal.registerProxy();
+			_signal.registerProxyMethod();
 		}
 
 		/**
@@ -455,7 +458,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		protected void init(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 				final String delegateMethodName) {
-			_signal.init(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
 		}
 
 		/**
@@ -518,9 +521,9 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 		@Override
 		public void setTarget(A target) {
-			_signal.removeProxy();
+			_signal.removeProxyMethod();
 			_signal.setTarget(target);
-			_signal.registerProxy();
+			_signal.registerProxyMethod();
 		}
 
 		/**
@@ -561,7 +564,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		protected void init(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 				final String delegateMethodName) {
-			_signal.init(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
 		}
 
 		/**
@@ -624,9 +627,9 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 		@Override
 		public void setTarget(A target) {
-			_signal.removeProxy();
+			_signal.removeProxyMethod();
 			_signal.setTarget(target);
-			_signal.registerProxy();
+			_signal.registerProxyMethod();
 		}
 
 		/**
@@ -668,7 +671,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		protected void init(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 				final String delegateMethodName) {
-			_signal.init(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
 		}
 
 		/**
@@ -732,9 +735,9 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 		@Override
 		public void setTarget(A target) {
-			_signal.removeProxy();
+			_signal.removeProxyMethod();
 			_signal.setTarget(target);
-			_signal.registerProxy();
+			_signal.registerProxyMethod();
 		}
 
 		/**
