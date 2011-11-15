@@ -40,11 +40,11 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 	protected void createProxy(final String adapterName, final String listenerName,
 			final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 			final List<String> delegateMethodNames) {
-		assert adapterName == null : "Adapter name can not be null";
-		assert listenerName == null : "Listener name can not be null";
-		assert parameterTypes == null : "Parameter types can not be null";
-		assert delegate == null : "Delegate can not be null";
-		assert delegateMethodNames == null : "Delegate method name can not be null";
+		assert adapterName != null : "Adapter name can not be null";
+		assert listenerName != null : "Listener name can not be null";
+		assert parameterTypes != null : "Parameter types can not be null";
+		assert delegate != null : "Delegate can not be null";
+		assert delegateMethodNames != null : "Delegate method name can not be null";
 
 		_delegate = delegate;
 		_listenerName = listenerName;
@@ -168,8 +168,8 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 		public NativeAPIAdapterProxy(final NativeAPIAdapterDelegate delegate,
 				final List<Method> delegateMethods) {
-			assert delegate == null : "Delegate can not be null";
-			assert delegateMethods == null : "Delegate methods can not be null";
+			assert delegate != null : "Delegate can not be null";
+			assert delegateMethods != null : "Delegate methods can not be null";
 
 			_delegate = delegate;
 			_delegateMethods = delegateMethods;
