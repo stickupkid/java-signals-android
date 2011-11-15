@@ -1,5 +1,8 @@
 package org.osjava.signals.natives.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.osjava.signals.natives.NativeAPIAdapterSignal.NativeAPIAdapterDelegate;
 import org.osjava.signals.natives.NativeAPIAdapterSignal.NativeAPIAdapterSignal2;
 
@@ -11,7 +14,12 @@ public class ViewOnViewAttachedToWindowSignal extends NativeAPIAdapterSignal2<Vi
 
 	private final static String LISTENER_NAME = "addOnAttachStateChangeListener";
 
-	private final static String METHOD_NAME = "onViewAttachedToWindow";
+	private final static List<String> METHOD_NAME = new ArrayList<String>();
+
+	static {
+		METHOD_NAME.add("onViewAttachedToWindow");
+		METHOD_NAME.add("onViewDetachedFromWindow");
+	}
 
 	/**
 	 * Private constructor
@@ -23,7 +31,7 @@ public class ViewOnViewAttachedToWindowSignal extends NativeAPIAdapterSignal2<Vi
 
 		final Class<?>[] parameterTypes = { View.class };
 
-		init(ADAPTER_NAME, LISTENER_NAME, parameterTypes, new TargetListener(), METHOD_NAME);
+		createProxy(ADAPTER_NAME, LISTENER_NAME, parameterTypes, new TargetListener(), METHOD_NAME);
 		setTarget(target);
 	}
 

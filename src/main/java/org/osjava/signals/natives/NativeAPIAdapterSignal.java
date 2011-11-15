@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -28,7 +29,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 	private NativeAPIAdapterDelegate _delegate;
 
-	private Method _delegateMethod;
+	private List<Method> _delegateMethods;
 
 	private Object _proxy;
 
@@ -38,12 +39,12 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 	protected void createProxy(final String adapterName, final String listenerName,
 			final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
-			final String delegateMethodName) {
+			final List<String> delegateMethodNames) {
 		assert adapterName == null : "Adapter name can not be null";
 		assert listenerName == null : "Listener name can not be null";
 		assert parameterTypes == null : "Parameter types can not be null";
 		assert delegate == null : "Delegate can not be null";
-		assert delegateMethodName == null : "Delegate method name can not be null";
+		assert delegateMethodNames == null : "Delegate method name can not be null";
 
 		_delegate = delegate;
 		_listenerName = listenerName;
@@ -56,18 +57,31 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			throw new RuntimeException(e);
 		}
 
-		try {
-			_delegateMethod = _delegate.getClass().getMethod(delegateMethodName, parameterTypes);
-		} catch (SecurityException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
+		_delegateMethods = new ArrayList<Method>();
+		for (final String delegateMethodName : delegateMethodNames) {
+			try {
+				final Method delegateMethod =
+						_delegate.getClass().getMethod(delegateMethodName, parameterTypes);
+				_delegateMethods.add(delegateMethod);
+			} catch (SecurityException e) {
+				throw new RuntimeException(e);
+			} catch (NoSuchMethodException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		if (_delegateMethods.size() != delegateMethodNames.size()) {
+			throw new InternalError("Invalid delegate method size");
 		}
 
 		final Class<?>[] proxyInterfaces = { _adapterClass };
 		final NativeAPIAdapterProxy adapterProxy =
-				new NativeAPIAdapterProxy(delegateMethodName, _delegate, _delegateMethod);
+				new NativeAPIAdapterProxy(_delegate, _delegateMethods);
 		_proxy = Proxy.newProxyInstance(classLoader, proxyInterfaces, adapterProxy);
+
+		if (null == _proxy) {
+			throw new InternalError("Invalid or null proxy instance");
+		}
 	}
 
 	protected void removeProxyMethod() {
@@ -130,8 +144,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 	 */
 	@Override
 	public boolean isAvailable() {
-		return null != _adapterClass && null != _delegateMethod && null != _proxy
-				&& null != _invokeMethod;
+		return null != _adapterClass && null != _proxy && null != _invokeMethod;
 	}
 
 	/**
@@ -139,35 +152,27 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 	 */
 	private final class NativeAPIAdapterProxy implements InvocationHandler {
 
-		private final Method hashCodeMethod;
-
-		private final Method equalsMethod;
-
 		private final Method toStringMethod;
 
-		private final String _methodName;
+		{
+			try {
+				toStringMethod = Object.class.getMethod("toString");
+			} catch (NoSuchMethodException e) {
+				throw new RuntimeException(e);
+			}
+		}
 
 		private final NativeAPIAdapterDelegate _delegate;
 
-		private final Method _delegateMethod;
+		private final List<Method> _delegateMethods;
 
-		public NativeAPIAdapterProxy(String methodName, NativeAPIAdapterDelegate delegate,
-				Method delegateMethod) {
-			assert null != methodName : "Method name can not be null";
-			assert null != delegate : "Delegate can not be null";
-			assert null != delegateMethod : "Delegate method can not be null";
+		public NativeAPIAdapterProxy(final NativeAPIAdapterDelegate delegate,
+				final List<Method> delegateMethods) {
+			assert delegate == null : "Delegate can not be null";
+			assert delegateMethods == null : "Delegate methods can not be null";
 
-			try {
-				hashCodeMethod = Object.class.getMethod("hashCode");
-				equalsMethod = Object.class.getMethod("equals", new Class[] { Object.class });
-				toStringMethod = Object.class.getMethod("toString");
-			} catch (NoSuchMethodException e) {
-				throw new NoSuchMethodError(e.getMessage());
-			}
-
-			_methodName = methodName;
 			_delegate = delegate;
-			_delegateMethod = delegateMethod;
+			_delegateMethods = delegateMethods;
 		}
 
 		@Override
@@ -175,24 +180,24 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 			final Class<?> declaringClass = method.getDeclaringClass();
 			if (declaringClass == Object.class) {
-				if (method.equals(hashCodeMethod)) {
-					return proxyHashCode(proxy);
-				} else if (method.equals(equalsMethod)) {
-					return proxyEquals(proxy, arguments[0]);
-				} else if (method.equals(toStringMethod)) {
+				if (method.equals(toStringMethod)) {
 					return proxyToString(proxy);
 				} else {
 					throw new InternalError("unexpected Object method dispatched: " + method);
 				}
 			} else {
-				if (method.getName().equals(_methodName)) {
-					try {
-						if (!_delegateMethod.isAccessible())
-							_delegateMethod.setAccessible(true);
 
-						return _delegateMethod.invoke(_delegate, arguments);
-					} catch (InvocationTargetException e) {
-						throw e.getTargetException();
+				for (final Method delegateMethod : _delegateMethods) {
+					final String delegateMethodName = delegateMethod.getName();
+					if (method.getName().equals(delegateMethodName)) {
+						try {
+							if (!delegateMethod.isAccessible())
+								delegateMethod.setAccessible(true);
+
+							return delegateMethod.invoke(_delegate, arguments);
+						} catch (InvocationTargetException e) {
+							throw e.getTargetException();
+						}
 					}
 				}
 
@@ -200,16 +205,8 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			}
 		}
 
-		protected Integer proxyHashCode(Object proxy) {
-			return new Integer(System.identityHashCode(proxy));
-		}
-
-		protected Boolean proxyEquals(Object proxy, Object other) {
-			return (proxy == other ? Boolean.TRUE : Boolean.FALSE);
-		}
-
 		protected String proxyToString(Object proxy) {
-			return proxy.getClass().getName() + '@' + Integer.toHexString(proxy.hashCode());
+			return proxy.getClass().getName();
 		}
 	}
 
@@ -243,10 +240,11 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			return new NativeAPIAdapterSignal1<A>();
 		}
 
-		protected void init(final String adapterName, final String listenerName,
+		protected void createProxy(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
-				final String delegateMethodName) {
-			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+				final List<String> delegateMethodNames) {
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate,
+					delegateMethodNames);
 		}
 
 		/**
@@ -349,10 +347,11 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			return new NativeAPIAdapterSignal2<A, B>();
 		}
 
-		protected void init(final String adapterName, final String listenerName,
+		protected void createProxy(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
-				final String delegateMethodName) {
-			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+				final List<String> delegateMethodNames) {
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate,
+					delegateMethodNames);
 		}
 
 		/**
@@ -455,10 +454,11 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			return new NativeAPIAdapterSignal3<A, B, C>();
 		}
 
-		protected void init(final String adapterName, final String listenerName,
+		protected void createProxy(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
-				final String delegateMethodName) {
-			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+				final List<String> delegateMethodNames) {
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate,
+					delegateMethodNames);
 		}
 
 		/**
@@ -561,10 +561,11 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			return new NativeAPIAdapterSignal4<A, B, C, D>();
 		}
 
-		protected void init(final String adapterName, final String listenerName,
+		protected void createProxy(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
-				final String delegateMethodName) {
-			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+				final List<String> delegateMethodNames) {
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate,
+					delegateMethodNames);
 		}
 
 		/**
@@ -668,10 +669,11 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			return new NativeAPIAdapterSignal5<A, B, C, D, E>();
 		}
 
-		protected void init(final String adapterName, final String listenerName,
+		protected void createProxy(final String adapterName, final String listenerName,
 				final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
-				final String delegateMethodName) {
-			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate, delegateMethodName);
+				final List<String> delegateMethodNames) {
+			_signal.createProxy(adapterName, listenerName, parameterTypes, delegate,
+					delegateMethodNames);
 		}
 
 		/**

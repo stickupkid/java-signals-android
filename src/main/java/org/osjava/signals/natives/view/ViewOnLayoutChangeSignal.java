@@ -1,5 +1,8 @@
 package org.osjava.signals.natives.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.osjava.signals.natives.NativeAPIAdapterSignal.NativeAPIAdapterDelegate;
 import org.osjava.signals.natives.NativeAPIAdapterSignal.NativeAPIAdapterSignal5;
 
@@ -12,7 +15,11 @@ public class ViewOnLayoutChangeSignal extends
 
 	private final static String LISTENER_NAME = "addOnLayoutChangeListener";
 
-	private final static String METHOD_NAME = "onLayoutChange";
+	private final static List<String> METHOD_NAME = new ArrayList<String>();
+
+	static {
+		METHOD_NAME.add("onLayoutChange");
+	}
 
 	/**
 	 * Private constructor
@@ -26,7 +33,7 @@ public class ViewOnLayoutChangeSignal extends
 				{ View.class, Integer.class, Integer.class, Integer.class, Integer.class,
 						Integer.class, Integer.class, Integer.class, Integer.class };
 
-		init(ADAPTER_NAME, LISTENER_NAME, parameterTypes, new TargetListener(), METHOD_NAME);
+		createProxy(ADAPTER_NAME, LISTENER_NAME, parameterTypes, new TargetListener(), METHOD_NAME);
 		setTarget(target);
 	}
 
