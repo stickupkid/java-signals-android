@@ -49,7 +49,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		_delegate = delegate;
 		_listenerName = listenerName;
 
-		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+		ClassLoader classLoader = NativeAPIAdapterSignal.class.getClassLoader();
 
 		try {
 			_adapterClass = classLoader.loadClass(adapterName);
