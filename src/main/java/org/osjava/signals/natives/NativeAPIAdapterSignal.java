@@ -39,6 +39,12 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 	protected void init(final String adapterName, final String listenerName,
 			final Class<?>[] parameterTypes, final NativeAPIAdapterDelegate delegate,
 			final String delegateMethodName) {
+
+		// TODO : add asserts!
+
+		_delegate = delegate;
+		_listenerName = listenerName;
+
 		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
 		try {
@@ -48,7 +54,7 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		}
 
 		try {
-			_delegateMethod = _delegate.getClass().getMethod(listenerName, parameterTypes);
+			_delegateMethod = _delegate.getClass().getMethod(delegateMethodName, parameterTypes);
 		} catch (SecurityException e) {
 			throw new RuntimeException(e);
 		} catch (NoSuchMethodException e) {
@@ -56,9 +62,9 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		}
 
 		final Class<?>[] proxyInterfaces = { _adapterClass };
-		_proxy =
-				Proxy.newProxyInstance(classLoader, proxyInterfaces, new NativeAPIAdapterProxy(
-						delegateMethodName, _delegate, _delegateMethod));
+		final NativeAPIAdapterProxy adapterProxy =
+				new NativeAPIAdapterProxy(delegateMethodName, _delegate, _delegateMethod);
+		_proxy = Proxy.newProxyInstance(classLoader, proxyInterfaces, adapterProxy);
 	}
 
 	protected void removeProxy() {
@@ -86,9 +92,9 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		if (null != _adapterClass && null != _proxy) {
 			T target = getTarget();
 			if (null != target) {
-
 				try {
 					final Method[] methods = target.getClass().getMethods();
+
 					for (final Method method : methods) {
 						if (method.getName().equals(_listenerName)) {
 							_invokeMethod = method;
@@ -130,6 +136,12 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 	 */
 	private final class NativeAPIAdapterProxy implements InvocationHandler {
 
+		private final Method hashCodeMethod;
+
+		private final Method equalsMethod;
+
+		private final Method toStringMethod;
+
 		private final String _methodName;
 
 		private final NativeAPIAdapterDelegate _delegate;
@@ -142,6 +154,14 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 			assert null != delegate : "Delegate can not be null";
 			assert null != delegateMethod : "Delegate method can not be null";
 
+			try {
+				hashCodeMethod = Object.class.getMethod("hashCode");
+				equalsMethod = Object.class.getMethod("equals", new Class[] { Object.class });
+				toStringMethod = Object.class.getMethod("toString");
+			} catch (NoSuchMethodException e) {
+				throw new NoSuchMethodError(e.getMessage());
+			}
+
 			_methodName = methodName;
 			_delegate = delegate;
 			_delegateMethod = delegateMethod;
@@ -149,18 +169,44 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] arguments) throws Throwable {
-			if (method.getName().equals(_methodName)) {
-				try {
-					if (!_delegateMethod.isAccessible())
-						_delegateMethod.setAccessible(true);
 
-					return _delegateMethod.invoke(_delegate, arguments);
-				} catch (InvocationTargetException e) {
-					throw e.getTargetException();
+			final Class<?> declaringClass = method.getDeclaringClass();
+			if (declaringClass == Object.class) {
+				if (method.equals(hashCodeMethod)) {
+					return proxyHashCode(proxy);
+				} else if (method.equals(equalsMethod)) {
+					return proxyEquals(proxy, arguments[0]);
+				} else if (method.equals(toStringMethod)) {
+					return proxyToString(proxy);
+				} else {
+					throw new InternalError("unexpected Object method dispatched: " + method);
 				}
-			}
+			} else {
+				if (method.getName().equals(_methodName)) {
+					try {
+						if (!_delegateMethod.isAccessible())
+							_delegateMethod.setAccessible(true);
 
-			throw new InternalError("Unexpected method dispatched: " + method);
+						return _delegateMethod.invoke(_delegate, arguments);
+					} catch (InvocationTargetException e) {
+						throw e.getTargetException();
+					}
+				}
+
+				throw new InternalError("Unexpected method dispatched: " + method);
+			}
+		}
+
+		protected Integer proxyHashCode(Object proxy) {
+			return new Integer(System.identityHashCode(proxy));
+		}
+
+		protected Boolean proxyEquals(Object proxy, Object other) {
+			return (proxy == other ? Boolean.TRUE : Boolean.FALSE);
+		}
+
+		protected String proxyToString(Object proxy) {
+			return proxy.getClass().getName() + '@' + Integer.toHexString(proxy.hashCode());
 		}
 	}
 
@@ -183,7 +229,6 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		 * Private constructor
 		 */
 		protected NativeAPIAdapterSignal1() {
-
 		}
 
 		/**
@@ -290,7 +335,6 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		 * Private constructor
 		 */
 		protected NativeAPIAdapterSignal2() {
-
 		}
 
 		/**
@@ -397,7 +441,6 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		 * Private constructor
 		 */
 		protected NativeAPIAdapterSignal3() {
-
 		}
 
 		/**
@@ -504,7 +547,6 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		 * Private constructor
 		 */
 		protected NativeAPIAdapterSignal4() {
-
 		}
 
 		/**
@@ -612,7 +654,6 @@ public class NativeAPIAdapterSignal<L extends SignalListener, T> extends NativeS
 		 * Private constructor
 		 */
 		protected NativeAPIAdapterSignal5() {
-
 		}
 
 		/**

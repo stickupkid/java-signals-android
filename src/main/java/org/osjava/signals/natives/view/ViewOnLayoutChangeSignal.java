@@ -14,8 +14,6 @@ public class ViewOnLayoutChangeSignal extends
 
 	private final static String METHOD_NAME = "onLayoutChange";
 
-	private TargetListener _listener = new TargetListener();
-
 	/**
 	 * Private constructor
 	 * 
@@ -23,12 +21,12 @@ public class ViewOnLayoutChangeSignal extends
 	 *            to be used when applying the listeners
 	 */
 	private ViewOnLayoutChangeSignal(View target) {
+
 		final Class<?>[] parameterTypes =
 				{ View.class, Integer.class, Integer.class, Integer.class, Integer.class,
 						Integer.class, Integer.class, Integer.class, Integer.class };
 
-		super.init(ADAPTER_NAME, LISTENER_NAME, parameterTypes, _listener, METHOD_NAME);
-
+		init(ADAPTER_NAME, LISTENER_NAME, parameterTypes, new TargetListener(), METHOD_NAME);
 		setTarget(target);
 	}
 
